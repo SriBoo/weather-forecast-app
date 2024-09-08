@@ -1,0 +1,26 @@
+const fetchWeather = async () => {
+  try {
+    const response = await axios.get(
+      `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${API_KEY}&units=metric`
+    );
+    setWeather({
+      temperature: response.data.main.temp,
+      description: response.data.weather[0].description,
+      humidity: response.data.main.humidity,
+      windSpeed: response.data.wind.speed,
+      pressure: response.data.main.pressure,
+      high: response.data.main.temp_max,
+      low: response.data.main.temp_min,
+    });
+  } catch (error: any) {
+    console.error("Error fetching weather data:", error);
+    if (axios.isAxiosError(error)) {
+      setError(
+        error.response?.data?.message ||
+        `Error: ${error.response?.status} - ${error.response?.statusText}`
+      );
+    } else {
+      setError('An unexpected error occurred');
+    }
+  }
+};
